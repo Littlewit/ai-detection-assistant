@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI检测助手</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">🔬</span>
+                <div>
+                    <h1>AI 检测助手</h1>
+                </div>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-tab="qa">智能问答</button>
+                <button class="nav-btn" data-tab="split">样板拆分</button>
+                <button class="nav-btn" data-tab="review">报告审核</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- 智能问答 -->
+        <section id="tab-qa" class="tab-content active">
+            <div class="card">
+                <h2>🤖 AI 智能问答</h2>
+                <p class="desc">基于标准库（IEC/EN/GB/ASTM/UL/REACH/RoHS 等），为检测工程师提供专业解答</p>
+                <div class="form-group">
+                    <label>选择检测类别（可选）：</label>
+                    <select id="qa-category">
+                        <option value="all">全部类别</option>
+                        <option value="chemical">有害物质检测</option>
+                        <option value="safety">安规检测</option>
+                        <option value="emc">EMC 检测</option>
+                        <option value="reliability">环境可靠性</option>
+                        <option value="material">材料分析</option>
+                        <option value="textile">纺织品检测</option>
+                        <option value="toy">玩具检测</option>
+                        <option value="food_contact">食品接触材料</option>
+                        <option value="energy">能效检测</option>
+                        <option value="certification">认证流程</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>提问内容：</label>
+                    <textarea id="qa-question" rows="4" placeholder="例如：某款电子玩具出口欧盟需要做哪些检测？&#10;RoHS 2.0 对邻苯二甲酸酯的限制值是多少？"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" id="btn-qa" onclick="askQuestion()">
+                        <span class="btn-text">提交提问</span>
+                        <span class="btn-loading" style="display:none">分析中...</span>
+                    </button>
+                </div>
+                <div id="qa-result" class="result-area" style="display:none">
+                    <h3>💡 回答</h3>
+                    <div id="qa-answer" class="answer-content"></div>
+                    <div id="qa-sources" class="sources" style="display:none">
+                        <strong>引用来源：</strong><span id="qa-sources-list"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 样板拆分 -->
+        <section id="tab-split" class="tab-content">
+            <div class="card">
+                <h2>🖼️ 样板拆分图生成</h2>
+                <p class="desc">上传产品图片，AI 自动识别组件结构，生成样板拆分示意图</p>
+                <div class="upload-zone" id="split-upload-zone">
+                    <div class="upload-icon">📷</div>
+                    <p>点击或拖拽上传产品图片</p>
+                    <p class="upload-hint">支持 JPG / PNG / BMP 格式</p>
+                    <input type="file" id="split-file" accept=".jpg,.jpeg,.png,.bmp" style="display:none">
+                </div>
+                <div id="split-preview" style="display:none">
+                    <img id="split-preview-img" class="preview-img">
+                    <p id="split-filename" class="file-name"></p>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" id="btn-split" onclick="analyzeSplit()" disabled>
+                        <span class="btn-text">开始分析</span>
+                        <span class="btn-loading" style="display:none">AI 分析中...</span>
+                    </button>
+                </div>
+                <div id="split-result" class="result-area" style="display:none">
+                    <h3>📋 拆分结果</h3>
+                    <div id="split-analysis"></div>
+                    <div id="split-diagram-container" style="display:none">
+                        <h4>拆分示意图</h4>
+                        <img id="split-diagram" class="diagram-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 报告审核 -->
+        <section id="tab-review" class="tab-content">
+            <div class="card">
+                <h2>📝 报告审核（五步审核工作流）</h2>
+                <p class="desc">上传申请表、拆分表和检测报告，AI 自动进行一致性/合规/完整性/CNAS-CMA/标准版本五步审核</p>
+                <div class="upload-group">
+                    <div class="upload-item">
+                        <label>📄 产品申请表</label>
+                        <input type="file" id="review-app" accept=".xlsx,.xls,.csv">
+                        <span id="review-app-name" class="file-label">未选择</span>
+                    </div>
+                    <div class="upload-item">
+                        <label>📋 样板拆分表</label>
+                        <input type="file" id="review-split" accept=".xlsx,.xls,.csv">
+                        <span id="review-split-name" class="file-label">未选择</span>
+                    </div>
+                    <div class="upload-item">
+                        <label>📑 检测报告</label>
+                        <input type="file" id="review-report" accept=".pdf,.docx,.txt">
+                        <span id="review-report-name" class="file-label">未选择</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" id="btn-review" onclick="reviewReport()" disabled>
+                        <span class="btn-text">开始审核</span>
+                        <span class="btn-loading" style="display:none">五步审核进行中...</span>
+                    </button>
+                </div>
+                <div id="review-result" class="result-area" style="display:none">
+                    <div id="review-progress" class="review-progress"></div>
+                    <div class="review-header">
+                        <span id="review-conclusion" class="conclusion-badge" style="display:none"></span>
+                        <span id="review-total" class="total-issues" style="display:none"></span>
+                    </div>
+                    <div id="review-report-content" class="report-content" style="display:none"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

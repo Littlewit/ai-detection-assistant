@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: ai-detect-app
+    ports:
+      - "8888:8888"
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+          cpus: "1.0"
+
+  worker:
+    build: .
+    container_name: ai-detect-worker
+    command: celery -A workers.celery_app worker --loglevel=info --concurrency=2
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+
+  redis:
+    image: redis:7-alpine
+    container_name: ai-detect-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
