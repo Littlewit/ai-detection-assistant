@@ -66,7 +66,7 @@ body {
 }
 
 /* Main */
-.main { max-width: 900px; margin: 0 auto; padding: 32px 24px; min-height: calc(100vh - 72px); display: flex; flex-direction: column; }
+.main { max-width: 1000px; margin: 0 auto; padding: 32px 24px; min-height: calc(100vh - 72px); display: flex; flex-direction: column; }
 
 .tab-content { display: none; }
 .tab-content.active { display: flex; flex-direction: column; flex: 1; }
@@ -316,10 +316,59 @@ body {
 }
 .component-table td { background: white; }
 
-/* Responsive */
+/* Responsive — 平板 */
 @media (max-width: 768px) {
-    .header-inner { flex-direction: column; height: auto; padding: 16px 0; gap: 12px; }
-    .nav { flex-wrap: wrap; justify-content: center; }
-    .card { padding: 20px; }
-    .upload-item { flex-direction: column; align-items: flex-start; }
+    .header { padding: 0 16px; }
+    .header-inner { flex-direction: column; height: auto; padding: 12px 0; gap: 10px; }
+    .logo h1 { font-size: 18px; }
+    .logo-icon { font-size: 26px; }
+    .nav { flex-wrap: wrap; justify-content: center; gap: 6px; }
+    .nav-btn { padding: 6px 14px; font-size: 13px; }
+    .main { padding: 16px 12px; }
+    .card { padding: 18px 16px; }
+    .card h2 { font-size: 18px; }
+    .card .desc { font-size: 13px; margin-bottom: 16px; }
+    .upload-zone { padding: 24px 16px; }
+    .upload-icon { font-size: 36px; }
+    .upload-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .upload-item label { min-width: auto; }
+    .upload-item input[type="file"] { width: 100%; }
+    .btn { width: 100%; justify-content: center; padding: 12px 20px; }
+    .result-area { padding: 16px 12px; }
+    .preview-img { max-width: 100%; }
+    .review-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Responsive — 手机 */
+@media (max-width: 480px) {
+    .header { padding: 0 12px; }
+    .header-inner { padding: 10px 0; gap: 8px; }
+    .logo { gap: 8px; }
+    .logo h1 { font-size: 16px; }
+    .logo-icon { font-size: 22px; }
+    .nav { width: 100%; gap: 4px; }
+    .nav-btn { flex: 1; min-width: 0; padding: 7px 6px; font-size: 12px; text-align: center; border-radius: 6px; border-width: 1.5px; }
+    .main { padding: 12px 8px; min-height: calc(100vh - 100px); }
+    .card { padding: 14px 12px; border-radius: 10px; }
+    .card h2 { font-size: 16px; }
+    .card .desc { font-size: 12px; margin-bottom: 14px; }
+    .form-group select,
+    .form-group textarea { padding: 8px 10px; font-size: 13px; }
+    .form-group textarea { rows: 3; }
+    .upload-zone { padding: 20px 12px; margin-bottom: 12px; }
+    .upload-icon { font-size: 30px; margin-bottom: 8px; }
+    .upload-zone p { font-size: 13px; }
+    .upload-hint { font-size: 11px; }
+    .upload-item { padding: 10px 12px; }
+    .upload-item label { font-size: 13px; }
+    .result-area { padding: 12px 10px; margin-top: 16px; }
+    .result-area h3 { font-size: 15px; }
+    .answer-content { font-size: 13px; }
+    .answer-content pre { padding: 10px 12px; font-size: 12px; }
+    .answer-content table { display: block; overflow-x: auto; white-space: nowrap; }
+    .component-table { display: block; overflow-x: auto; white-space: nowrap; }
+    .step-item { padding: 6px 10px; font-size: 12px; gap: 8px; }
+    .step-num { min-width: 24px; }
+    .report-content { padding: 14px 12px; font-size: 13px; }
+    .conclusion-badge { font-size: 13px; padding: 5px 12px; }
 }
