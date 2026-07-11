@@ -99,8 +99,8 @@ AI-detection-assistant/
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/your-username/AI-detection-assistant.git
-cd AI-detection-assistant
+git clone https://github.com/your-username/ai-detection-assistant.git
+cd ai-detection-assistant
 
 # 2. 创建虚拟环境（使用 uv）
 uv venv .venv --python 3.13
