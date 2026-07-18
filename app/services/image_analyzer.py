@@ -1,15 +1,13 @@
 """图像分析服务 - 多模态产品识别与拆分图渲染"""
 
-import base64
 import json
 import os
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from PIL import Image
-from langchain_core.messages import HumanMessage
-from app.models.llm import get_vl_llm
+from dashscope import MultiModalConversation
+from app.config import get_settings
 
 
 SPLIT_ANALYSIS_PROMPT = """
@@ -45,28 +43,29 @@ SPLIT_ANALYSIS_PROMPT = """
 
 
 def analyze_product_image(image_path: str) -> dict:
-    """分析产品图片，生成拆分结构"""
-    vl_llm = get_vl_llm()
+    """分析产品图片，生成拆分结构（使用 DashScope MultiModalConversation 原生 API）"""
+    settings = get_settings()
 
-    with open(image_path, "rb") as f:
-        image_base64 = base64.b64encode(f.read()).decode()
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {"text": SPLIT_ANALYSIS_PROMPT},
+                {"image": f"file://{image_path}"},
+            ],
+        }
+    ]
 
-    # 检测文件类型
-    ext = os.path.splitext(image_path)[1].lower()
-    mime_type = {
-        ".jpg": "image/jpeg",
-        ".jpeg": "image/jpeg",
-        ".png": "image/png",
-        ".bmp": "image/bmp",
-    }.get(ext, "image/jpeg")
+    response = MultiModalConversation.call(
+        model=settings.qwen_vl_model,
+        messages=messages,
+        api_key=settings.dashscope_api_key,
+    )
 
-    message = HumanMessage(content=[
-        {"type": "text", "text": SPLIT_ANALYSIS_PROMPT},
-        {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{image_base64}"}},
-    ])
+    if response.status_code != 200:
+        raise RuntimeError(f"VL model error: {response.code} - {response.message}")
 
-    response = vl_llm.invoke([message])
-    content = response.content.strip()
+    content = response.output.choices[0].message["content"][0]["text"].strip()
     # 清理 markdown 代码块
     if content.startswith("```"):
         content = content.split("\n", 1)[1] if "\n" in content else content[3:]
