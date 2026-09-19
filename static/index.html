@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI检测助手</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=2">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
@@ -72,30 +72,25 @@
         <section id="tab-split" class="tab-content">
             <div class="card">
                 <h2>🖼️ 样板拆分图生成</h2>
-                <p class="desc">上传产品图片，AI 自动识别组件结构，生成样板拆分示意图</p>
+                <p class="desc">上传产品图片（支持多张），AI 自动识别组件结构，按材质分组生成样板拆分示意图，并输出各组件对应的检测项目和适用标准</p>
                 <div class="upload-zone" id="split-upload-zone">
                     <div class="upload-icon">📷</div>
                     <p>点击或拖拽上传产品图片</p>
-                    <p class="upload-hint">支持 JPG / PNG / BMP 格式</p>
-                    <input type="file" id="split-file" accept=".jpg,.jpeg,.png,.bmp" style="display:none">
+                    <p class="upload-hint">支持 JPG / PNG / BMP 格式 · 可一次选择多张 · 建议拍摄产品全貌及各组件分布</p>
+                    <input type="file" id="split-file" accept=".jpg,.jpeg,.png,.bmp" multiple style="display:none">
                 </div>
-                <div id="split-preview" style="display:none">
-                    <img id="split-preview-img" class="preview-img">
-                    <p id="split-filename" class="file-name"></p>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" id="btn-split" onclick="analyzeSplit()" disabled>
+                <div id="split-gallery" class="split-gallery" style="display:none"></div>
+                <div class="form-group" id="split-btn-group" style="display:none">
+                    <button class="btn btn-primary" id="btn-split" onclick="analyzeAllSplit()">
                         <span class="btn-text">开始分析</span>
                         <span class="btn-loading" style="display:none">AI 分析中...</span>
                     </button>
+                    <button class="btn btn-outline" id="btn-split-clear" onclick="clearSplitImages()">清空图片</button>
                 </div>
-                <div id="split-result" class="result-area" style="display:none">
-                    <h3>📋 拆分结果</h3>
-                    <div id="split-analysis"></div>
-                    <div id="split-diagram-container" style="display:none">
-                        <h4>拆分示意图</h4>
-                        <img id="split-diagram" class="diagram-img">
-                    </div>
+                <div id="split-progress" class="split-progress" style="display:none"></div>
+                <div id="split-results" class="split-results" style="display:none">
+                    <div id="split-result-tabs" class="split-result-tabs"></div>
+                    <div id="split-result-panels"></div>
                 </div>
             </div>
         </section>
@@ -141,6 +136,6 @@
     </main>
 
 
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/app.js?v=2"></script>
 </body>
 </html>

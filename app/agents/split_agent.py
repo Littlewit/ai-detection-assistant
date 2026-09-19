@@ -1,7 +1,6 @@
 """样板拆分 LangGraph Agent"""
 
 import os
-import json
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from langchain_core.prompts import ChatPromptTemplate
@@ -44,10 +43,32 @@ def run_split(image_path: str) -> dict:
     # 3. AI 自审拆分结果
     llm = get_text_llm()
     review_prompt = ChatPromptTemplate.from_template(
-        "请审核以下产品拆分结果是否合理，回答'合理'或提出修改建议：\n{analysis}"
+        """你是一名玩具检测工程师，请审核以下样板拆分结果是否合理：
+
+产品名称：{product_name}
+产品类别：{product_category}
+
+拆分组件：
+{components}
+
+请检查：
+1. 材质分组是否合理（是否遗漏了重要材质类型）
+2. 检测项目是否覆盖了玩具安全标准（EN 71/GB 6675/ASTM F963）
+3. 是否识别了小零件/电池/磁铁等安全风险组件
+4. 适用年龄段判断是否合理
+
+回答'合理'或提出具体修改建议。"""
     )
+    components_text = "\n".join([
+        f"- {c['name']}: {c.get('material','')} ({c.get('material_category','')}) → {', '.join(c.get('test_items',[]))}" 
+        for c in analysis.get('components', [])
+    ])
     chain = review_prompt | llm
-    review_result = chain.invoke({"analysis": json.dumps(analysis, ensure_ascii=False)})
+    review_result = chain.invoke({
+        "product_name": analysis.get('product_name', ''),
+        "product_category": analysis.get('product_category', ''),
+        "components": components_text,
+    })
     quality_ok = "合理" in review_result.content
 
     return {

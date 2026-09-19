@@ -35,3 +35,6 @@ Thumbs.db
 docker-compose.override.yml
 
 item.md
+
+# ---- 资源文件 ----
+resources/

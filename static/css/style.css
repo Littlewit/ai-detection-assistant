@@ -297,24 +297,230 @@ body {
 }
 
 /* Split analysis table */
+.split-table-wrapper { overflow-x: auto; margin-top: 12px; }
 .component-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
-    margin-top: 12px;
+    min-width: 720px;
 }
 .component-table th,
 .component-table td {
     padding: 8px 12px;
     border: 1px solid var(--gray-200);
     text-align: left;
+    vertical-align: top;
 }
 .component-table th {
     background: var(--primary-light);
     font-weight: 600;
     font-size: 12px;
+    white-space: nowrap;
 }
 .component-table td { background: white; }
+
+/* 产品信息卡片 */
+.split-product-info {
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+}
+.product-info-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+.product-info-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gray-800);
+}
+.product-info-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--primary-light);
+    color: var(--primary);
+}
+.product-info-badge.badge-age {
+    background: #fef3c7;
+    color: var(--warning);
+}
+.product-info-structure {
+    font-size: 13px;
+    color: var(--gray-600);
+    line-height: 1.6;
+}
+
+/* 安全警示 */
+.split-safety-warnings {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+.safety-warn-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--danger);
+    margin-bottom: 6px;
+}
+.split-safety-warnings ul {
+    padding-left: 18px;
+    margin: 0;
+}
+.split-safety-warnings li {
+    font-size: 13px;
+    color: #7f1d1d;
+    margin: 2px 0;
+}
+
+/* 材质类别徽章 */
+.mat-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    white-space: nowrap;
+}
+
+/* 安全风险等级 */
+.risk-high {
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 12px;
+}
+.risk-mid {
+    color: var(--warning);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+/* 多图缩略图画廊 */
+.split-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--gray-50);
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+}
+.gallery-thumb {
+    position: relative;
+    width: 120px;
+    text-align: center;
+}
+.gallery-thumb img {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--gray-200);
+    transition: border-color .2s;
+}
+.gallery-thumb:hover img { border-color: var(--primary); }
+.gallery-name {
+    display: block;
+    font-size: 11px;
+    color: var(--gray-600);
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.gallery-remove {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: var(--danger);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity .2s;
+}
+.gallery-thumb:hover .gallery-remove { opacity: 1; }
+
+/* 清空按钮 */
+.btn-outline {
+    background: transparent;
+    color: var(--gray-600);
+    border: 1.5px solid var(--gray-200);
+}
+.btn-outline:hover { background: var(--gray-100); border-color: var(--gray-600); }
+
+/* 拆分进度 */
+.split-progress { margin-bottom: 16px; }
+
+/* 多图结果 Tabs */
+.split-results { margin-top: 16px; }
+.split-result-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--gray-200);
+    margin-bottom: 16px;
+    overflow-x: auto;
+}
+.split-tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--gray-600);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all .2s;
+}
+.split-tab-btn:hover { color: var(--primary); }
+.split-tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+.split-tab-panel { display: none; }
+.split-tab-panel.active { display: block; }
+
+/* 结果头部（缩略图+元数据） */
+.split-result-header {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+}
+.split-result-thumb {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    flex-shrink: 0;
+}
+.split-result-meta { flex: 1; min-width: 0; }
+.split-diagram-section { margin-top: 20px; }
+.split-diagram-section h4 { margin-bottom: 8px; font-size: 15px; }
 
 /* Responsive — 平板 */
 @media (max-width: 768px) {
@@ -337,6 +543,12 @@ body {
     .result-area { padding: 16px 12px; }
     .preview-img { max-width: 100%; }
     .review-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .split-gallery { gap: 8px; padding: 8px; }
+    .gallery-thumb { width: 90px; }
+    .gallery-thumb img { width: 90px; height: 68px; }
+    .gallery-remove { opacity: 1; }
+    .split-result-header { flex-direction: column; gap: 10px; }
+    .split-result-thumb { width: 100%; height: auto; max-height: 200px; }
 }
 
 /* Responsive — 手机 */
@@ -354,7 +566,7 @@ body {
     .card .desc { font-size: 12px; margin-bottom: 14px; }
     .form-group select,
     .form-group textarea { padding: 8px 10px; font-size: 13px; }
-    .form-group textarea { rows: 3; }
+    .form-group textarea { min-height: 80px; resize: vertical; }
     .upload-zone { padding: 20px 12px; margin-bottom: 12px; }
     .upload-icon { font-size: 30px; margin-bottom: 8px; }
     .upload-zone p { font-size: 13px; }
@@ -371,4 +583,11 @@ body {
     .step-num { min-width: 24px; }
     .report-content { padding: 14px 12px; font-size: 13px; }
     .conclusion-badge { font-size: 13px; padding: 5px 12px; }
+    .split-gallery { gap: 6px; padding: 6px; }
+    .gallery-thumb { width: 80px; }
+    .gallery-thumb img { width: 80px; height: 60px; }
+    .split-tab-btn { padding: 6px 10px; font-size: 12px; }
+    .split-result-header { flex-direction: column; gap: 8px; }
+    .split-result-thumb { width: 100%; height: auto; max-height: 160px; }
+    .product-info-name { font-size: 16px; }
 }

@@ -21,15 +21,21 @@ class SplitComponent(BaseModel):
     name: str
     material: str
     material_category: str
+    color: str = ""
     quantity: int
     position: str
+    is_small_part: bool = False
+    safety_risk: str = ""
     test_items: list[str]
     applicable_standards: list[str] = []
 
 
 class SplitResult(BaseModel):
     product_name: str
+    product_category: str = ""
+    age_group: str = ""
     components: list[SplitComponent]
+    safety_warnings: list[str] = []
     overall_structure: str
     diagram_path: Optional[str] = None
 

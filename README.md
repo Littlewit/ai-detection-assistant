@@ -137,7 +137,7 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8888 --reload
 ```bash
 # 1. 在服务器上克隆项目
 git clone https://github.com/your-username/ai-detection-assistant.git
-cd AI-detection-assistant
+cd ai-detection-assistant
 
 # 2. 配置环境变量
 cp .env.example .env
